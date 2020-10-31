@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>x-o</title>
+        <style>
+          .box{
+              height: 150px;
+              width:150px;
+              background-color: aquamarine;
+              text-align: center;
+              font-size: 75px;
+          }
+          #cont{
+              width:500px;
+              margin-left: 25%;
+              margin-top: 10%;
+          }
+          .continer{
+              display:grid;
+              grid-gap: 15px;
+              grid-template-columns: auto auto auto;
+          }
+          .score{
+              display:inline-block;
+              
+          }
+          .player{
+            display:inline-block;
+            margin-left: 50px;
+            margin-top: 0;
+          }
+        </style>
+    </head>
+    <body>
+        <h1 class="player">player1(x): <p class="score" id="score1"></p></h1>
+        <h1 class="player">player2(o): <p class="score" id="score2"></p></h1>
+        <div id="cont">
+            <div class="continer">
+                
+                <div class="box" id="0-0" ></div>
+                <div class="box" id="0-1" ></div>
+                <div class="box" id="0-2" ></div>
+            
+        
+                <div class="box" id="1-0" ></div>
+                <div class="box" id="1-1" ></div>
+                <div class="box" id="1-2" ></div>
+            
+        
+                <div class="box" id="2-0" ></div>
+                <div class="box" id="2-1" ></div>
+                <div class="box" id="2-2" ></div>
+            
+            </div>
+            </div>
+<script>
+let score1=document.getElementById("score1");
+let score2=document.getElementById("score2")
+let playerrole=0;
+
+let rowofbox={
+    "0":0,
+    "1":0,
+    "2":0
+}
+
+let columnofbox={
+    "0":0,
+    "1":0,
+    "2":0
+}
+
+let crossofbox={
+    "0":0,
+    "1":0
+}
+
+let gameover=false;
+
+let winner="";
+checkhappen=false
+function retrygame(){
+    playerrole=0
+    rowofbox={
+    "0":0,
+    "1":0,
+    "2":0
+    }
+    columnofbox={
+    "0":0,
+    "1":0,
+    "2":0
+    }
+    crossofbox={
+    "0":0,
+    "1":0
+    }
+    gameover=false;
+    winner=""
+    boxes=document.getElementsByClassName("box")
+    for(box of boxes){
+        box.innerHTML=""
+        box.data=false
+    }
+}
+
+function check(number,ch,player,score){
+    if( number == ch){
+            gameover=true
+            checkhappen=true
+            winner=player
+            score.innerHTML=Number(score.innerHTML)+1
+            alert(`${winner} is win`)
+            retrygame()
+            return true
+        }
+    return false
+}
+
+
+function endgame(box,m){
+    
+    if(m==0){
+        var finish=3
+        var add=1
+        var player="player1"
+        var score=score1
+    }else{
+        var finish=-3
+        var add=-1
+        var player="player2"
+        var score=score2
+    }
+    row=box.id[0]
+    column=box.id[2]
+
+
+    if(row == column){
+        crossofbox["0"]+=add
+       
+        
+        if(row=="1"){
+            crossofbox["1"]+=add
+        }
+
+    }
+
+    else if(box.id=="2-0" || box.id=="0-2"){
+        crossofbox["1"]+=add
+    }
+    rowofbox[row]+=add
+    columnofbox[column]+=add
+
+
+    let arr=[crossofbox["0"],
+    crossofbox["0"],
+    rowofbox[row],
+    columnofbox[column]]
+    for (const ch of arr){
+        c=check(ch,finish,player,score);
+        if(c){
+            break;
+        }
+    }
+    
+}
+function game(e){
+    box=e.target
+    if(!box.data && !gameover){
+        if(playerrole%2==0){
+            box.innerHTML="x"
+            endgame(box,0)
+    }
+        else{
+            box.innerHTML="o"
+            endgame(box,1)
+    }
+    if(checkhappen){
+        checkhappen=false
+    }else{
+    playerrole++
+    box.data=true
+    }
+    if(playerrole>=9){
+        alert(`draw`)
+        gameover=true
+        retrygame()
+    }
+   
+    }
+       
+        
+    }
+    
+
+let continer=document.getElementsByClassName("continer")[0];
+continer.onclick=game;
+/*for(const box of document.getElementsByClassName("box")){
+box.onclick=()=>{console.log(box.id)}
+}*/
+            </script>
+    </body>
+</html>
