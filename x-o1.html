@@ -166,7 +166,7 @@ function endgame(box,m){
 }
 function game(e){
     box=e.target
-    if(!box.data && !gameover){
+    if(!box.data && !gameover && box.className=="box"){
         if(playerrole%2==0){
             box.innerHTML="x"
             endgame(box,0)
